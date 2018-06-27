@@ -11,20 +11,22 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 @Dao
-public interface TaskDao {
+public interface JournalDao {
 
-    @Query("SELECT * FROM note ORDER BY id")
-    LiveData<List<TaskEntry>> loadAllTasks();
+    @Query("SELECT * FROM NOTE ORDER BY updated_at")
+    LiveData<List<JournalEntry>> loadAllJournals();
 
     @Insert
-    void insertTask(TaskEntry taskEntry);
+    void insertJournal(JournalEntry journalEntry);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateTask(TaskEntry taskEntry);
+    void updateJournal(JournalEntry journalEntry);
 
     @Delete
-    void deleteTask(TaskEntry taskEntry);
+    void deleteJournal(JournalEntry journalEntry);
 
-    @Query("SELECT * FROM note WHERE id = :id")
-    LiveData<TaskEntry> loadTaskById(int id);
+    @Query("SELECT * FROM NOTE WHERE id = :id")
+    LiveData<JournalEntry> loadJournalById(int id);
+
+
 }

@@ -8,23 +8,27 @@ import android.arch.persistence.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(tableName = "note")
-public class TaskEntry {
+public class JournalEntry {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String description;
+
+    private String content;
     @ColumnInfo(name = "updated_at")
     private Date updatedAt;
 
     @Ignore
-    public TaskEntry(String description,  Date updatedAt) {
+    public JournalEntry(String description, String content, Date updatedAt) {
         this.description = description;
+        this.content = content;
         this.updatedAt = updatedAt;
     }
 
-    public TaskEntry(int id, String description,  Date updatedAt) {
+    public JournalEntry(int id, String description, String content, Date updatedAt) {
         this.id = id;
         this.description = description;
+        this.content = content;
         this.updatedAt = updatedAt;
     }
 
@@ -44,7 +48,13 @@ public class TaskEntry {
         this.description = description;
     }
 
+    public String getContent() {
+        return content;
+    }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public Date getUpdatedAt() {
         return updatedAt;

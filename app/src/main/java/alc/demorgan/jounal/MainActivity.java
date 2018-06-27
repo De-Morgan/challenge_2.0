@@ -34,16 +34,14 @@ import android.view.View;
 import java.util.List;
 
 import alc.demorgan.jounal.database.AppDatabase;
-import alc.demorgan.jounal.database.TaskEntry;
+import alc.demorgan.jounal.database.JournalEntry;
 
 import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 
 public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemClickListener {
 
-    // Constant for logging
     private static final String TAG = MainActivity.class.getSimpleName();
-    // Member variables for the adapter and RecyclerView
     private RecyclerView mRecyclerView;
     private NoteAdapter mAdapter;
 
@@ -54,25 +52,16 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Set the RecyclerView to its corresponding view
-        mRecyclerView = findViewById(R.id.recyclerViewTasks);
+        mRecyclerView = findViewById(R.id.recyclerViewJournals);
 
-        // Set the layout for the RecyclerView to be a linear layout, which measures and
-        // positions items within a RecyclerView into a linear list
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Initialize the adapter and attach it to the RecyclerView
         mAdapter = new NoteAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), VERTICAL);
         mRecyclerView.addItemDecoration(decoration);
 
-        /*
-         Add a touch helper to the RecyclerView to recognize when a user swipes to delete an item.
-         An ItemTouchHelper enables touch behavior (like swipe and move) on each ViewHolder,
-         and uses callbacks to signal when a user is performing these actions.
-         */
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -87,8 +76,8 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
                     @Override
                     public void run() {
                         int position = viewHolder.getAdapterPosition();
-                        List<TaskEntry> tasks = mAdapter.getTasks();
-                        mDb.taskDao().deleteTask(tasks.get(position));
+                        List<JournalEntry> tasks = mAdapter.getJournals();
+                        mDb.journalDao().deleteJournal(tasks.get(position));
                     }
                 });
             }
@@ -116,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
 
     private void setupViewModel() {
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        viewModel.getTasks().observe(this, new Observer<List<TaskEntry>>() {
+        viewModel.getJournals().observe(this, new Observer<List<JournalEntry>>() {
             @Override
-            public void onChanged(@Nullable List<TaskEntry> taskEntries) {
+            public void onChanged(@Nullable List<JournalEntry> taskEntries) {
                 Log.d(TAG, "Updating list of tasks from LiveData in ViewModel");
-                mAdapter.setTasks(taskEntries);
+                mAdapter.setJournals(taskEntries);
             }
         });
     }
@@ -129,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NoteAdapter.ItemC
     public void onItemClickListener(int itemId) {
         // Launch AddNoteActivity adding the itemId as an extra in the intent
         Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
-        intent.putExtra(AddNoteActivity.EXTRA_TASK_ID, itemId);
+        intent.putExtra(AddNoteActivity.EXTRA_JOURNAL_ID, itemId);
         startActivity(intent);
     }
 }

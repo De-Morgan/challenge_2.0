@@ -5,22 +5,17 @@ import android.arch.lifecycle.ViewModel;
 
 
 import alc.demorgan.jounal.database.AppDatabase;
-import alc.demorgan.jounal.database.TaskEntry;
+import alc.demorgan.jounal.database.JournalEntry;
 
-// COMPLETED (5) Make this class extend ViewModel
 public class AddNoteViewModel extends ViewModel {
 
-    // COMPLETED (6) Add a task member variable for the TaskEntry object wrapped in a LiveData
-    private LiveData<TaskEntry> note;
+    private LiveData<JournalEntry> note;
 
-    // COMPLETED (8) Create a constructor where you call loadTaskById of the taskDao to initialize the tasks variable
-    // Note: The constructor should receive the database and the taskId
-    public AddNoteViewModel(AppDatabase database, int taskId) {
-        note = database.taskDao().loadTaskById(taskId);
+   public AddNoteViewModel(AppDatabase database, int taskId) {
+        note = database.journalDao().loadJournalById(taskId);
     }
 
-    // COMPLETED (7) Create a getter for the task variable
-    public LiveData<TaskEntry> getTask() {
+    public LiveData<JournalEntry> getTask() {
         return note;
     }
 }

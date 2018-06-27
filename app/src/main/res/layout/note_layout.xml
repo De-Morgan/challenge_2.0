@@ -1,56 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?><!-- This linear layout contains a single item displayed in the MainActivity -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="8dp"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="8dp"
+    android:padding="@dimen/activity_note_margin"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+
     tools:context="alc.demorgan.jounal.NotepadActivity">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
 
-        <!-- TextView that displays the description -->
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:elevation="5dp"
+            android:padding="@dimen/activity_horizontal_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            card_view:cardCornerRadius="@dimen/card_album_radius">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:padding="@dimen/text_side_margin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/layout"
+                    android:maxLines="2"
+                    android:background="@color/colorAccent"
+
+
+                    />
         <TextView
-            android:id="@+id/taskDescription"
+
+            android:id="@+id/journalDescription"
             style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_below="@id/layout"
+            android:layout_marginTop="@dimen/text_side_margin"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@android:color/primary_text_light"
+            android:paddingLeft="@dimen/text_side_margin"
+            android:paddingRight="@dimen/text_side_margin"
+            android:maxLines="1"
             tools:text="Description" />
 
         <!-- TextView that displays the update date -->
         <TextView
             android:id="@+id/noteUpdatedAt"
             style="@style/TextAppearance.AppCompat.Small"
+            android:layout_below="@id/journalDescription"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/primary_text_light"
+            android:paddingBottom="@dimen/songs_count_padding_bottom"
+            android:paddingLeft="@dimen/text_side_margin"
+            android:paddingRight="@dimen/text_side_margin"
+            android:textSize="14sp"
+            android:textColor="@color/colorAccent"
             tools:text="11/11/1111" />
 
-    </LinearLayout>
 
-    <!-- A priority circle that is colored in programmatically in the adapter code -->
-    <TextView
-        android:id="@+id/priorityTextView"
-        style="@style/TextAppearance.AppCompat.Small"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
-        android:layout_gravity="center"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@drawable/priority_circle"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:textColor="@android:color/primary_text_light"
-        tools:text="1" />
 
-</LinearLayout>
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+
 
 

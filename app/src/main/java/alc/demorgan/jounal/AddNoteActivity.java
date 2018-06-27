@@ -18,42 +18,39 @@ package alc.demorgan.jounal;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ShareCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.util.Date;
 
 import alc.demorgan.jounal.database.AppDatabase;
-import alc.demorgan.jounal.database.TaskEntry;
+import alc.demorgan.jounal.database.JournalEntry;
 
 
 public class AddNoteActivity extends AppCompatActivity {
 
-    // Extra for the task ID to be received in the intent
-    public static final String EXTRA_TASK_ID = "extraTaskId";
-    // Extra for the task ID to be received after rotation
-    public static final String INSTANCE_TASK_ID = "instanceTaskId";
-    // Constants for priority
+    public static final String EXTRA_JOURNAL_ID = "extraJournalId";
+    public static final String INSTANCE_JOURNAL_ID = "instanceJournalId";
 
-    // Constant for default task id to be used when not in update mode
-    private static final int DEFAULT_TASK_ID = -1;
-    // Constant for logging
+    private static final int DEFAULT_JOURNAL_ID = -1;
     private static final String TAG = AddNoteActivity.class.getSimpleName();
-    // Fields for views
     EditText mEditText;
-    RadioGroup mRadioGroup;
-    Button mButton;
+    EditText mEditTextContext;
 
-    private int mTaskId = DEFAULT_TASK_ID;
+    private int mJournalId = DEFAULT_JOURNAL_ID;
 
-    // Member variable for the Database
     private AppDatabase mDb;
+
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,31 +60,24 @@ public class AddNoteActivity extends AppCompatActivity {
 
         mDb = AppDatabase.getInstance(getApplicationContext());
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_TASK_ID)) {
-            mTaskId = savedInstanceState.getInt(INSTANCE_TASK_ID, DEFAULT_TASK_ID);
+        if (savedInstanceState != null && savedInstanceState.containsKey(INSTANCE_JOURNAL_ID)) {
+            mJournalId = savedInstanceState.getInt(INSTANCE_JOURNAL_ID, DEFAULT_JOURNAL_ID);
         }
 
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra(EXTRA_TASK_ID)) {
-            mButton.setText(R.string.update_button);
-            if (mTaskId == DEFAULT_TASK_ID) {
-                // populate the UI
-                mTaskId = intent.getIntExtra(EXTRA_TASK_ID, DEFAULT_TASK_ID);
+        if (intent != null && intent.hasExtra(EXTRA_JOURNAL_ID)) {
+            if (mJournalId == DEFAULT_JOURNAL_ID) {
+                mJournalId = intent.getIntExtra(EXTRA_JOURNAL_ID, DEFAULT_JOURNAL_ID);
 
-                // COMPLETED (9) Remove the logging and the call to loadTaskById, this is done in the ViewModel now
-                // COMPLETED (10) Declare a AddNoteViewModelFactory using mDb and mTaskId
-                AddNoteViewModelFactory factory = new AddNoteViewModelFactory(mDb, mTaskId);
-                // COMPLETED (11) Declare a AddNoteViewModel variable and initialize it by calling ViewModelProviders.of
-                // for that use the factory created above AddNoteViewModel
-                final AddNoteViewModel viewModel
+               AddNoteViewModelFactory factory = new AddNoteViewModelFactory(mDb, mJournalId);
+              final AddNoteViewModel viewModel
                         = ViewModelProviders.of(this, factory).get(AddNoteViewModel.class);
 
-                // COMPLETED (12) Observe the LiveData object in the ViewModel. Use it also when removing the observer
-                viewModel.getTask().observe(this, new Observer<TaskEntry>() {
+                viewModel.getTask().observe(this, new Observer<JournalEntry>() {
                     @Override
-                    public void onChanged(@Nullable TaskEntry taskEntry) {
+                    public void onChanged(@Nullable JournalEntry journalEntry) {
                         viewModel.getTask().removeObserver(this);
-                        populateUI(taskEntry);
+                        populateUI(journalEntry);
                     }
                 });
             }
@@ -96,70 +86,116 @@ public class AddNoteActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt(INSTANCE_TASK_ID, mTaskId);
+        outState.putInt(INSTANCE_JOURNAL_ID, mJournalId);
         super.onSaveInstanceState(outState);
     }
 
-    /**
-     * initViews is called from onCreate to init the member variable views
-     */
+
     private void initViews() {
         mEditText = findViewById(R.id.editTextDescription);
+        mEditTextContext = findViewById(R.id.content);
 
-        mButton = findViewById(R.id.saveButton);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSaveButtonClicked();
-            }
-        });
     }
 
-    /**
-     * populateUI would be called to populate the UI when in update mode
-     *
-     * @param task the taskEntry to populate the UI
-     */
-    private void populateUI(TaskEntry task) {
+
+    private void populateUI(JournalEntry task) {
         if (task == null) {
             return;
         }
 
         mEditText.setText(task.getDescription());
+        mEditTextContext.setText(task.getContent());
     }
 
-    /**
-     * onSaveButtonClicked is called when the "save" button is clicked.
-     * It retrieves user input and inserts that new task data into the underlying database.
-     */
     public void onSaveButtonClicked() {
         String description = mEditText.getText().toString();
+        String content = mEditTextContext.getText().toString();
+
         Date date = new Date();
 
-        final TaskEntry task = new TaskEntry(description,  date);
+        final JournalEntry journal = new JournalEntry(description, content,  date);
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (mTaskId == DEFAULT_TASK_ID) {
-                    // insert new task
-                    mDb.taskDao().insertTask(task);
+                if (mJournalId == DEFAULT_JOURNAL_ID) {
+                    mDb.journalDao().insertJournal(journal);
                 } else {
-                    //update task
-                    task.setId(mTaskId);
-                    mDb.taskDao().updateTask(task);
+                    journal.setId(mJournalId);
+                    mDb.journalDao().updateJournal(journal);
                 }
                 finish();
             }
         });
     }
 
-    /**
-     * getPriority is called whenever the selected priority needs to be retrieved
-     */
 
-    /**
-     * setPriority is called when we receive a task from MainActivity
-     *
-     * @param priority the priority value
-     */
+
+public void shareText(String textToShare) {
+
+        String mimeType = "text/plain";
+
+        String title = "Share Note ";
+
+        ShareCompat.IntentBuilder
+                /* The from method specifies the Context from which this share is coming from */
+                .from(this)
+                .setType(mimeType)
+                .setChooserTitle(title)
+                .setText(textToShare)
+                .startChooser();
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.action_save :
+                onSaveButtonClicked();
+                Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+
+                return true;
+            case  R.id.action_share :
+                String noteToShare = mEditTextContext.getText().toString();
+                shareText(noteToShare);
+                return true;
+            case R.id.action_clear :
+
+                new AlertDialog.Builder(this)
+                        .setMessage("Do you want to clear note ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                mEditTextContext.setText("");
+
+                            }
+                        })
+                        .setNegativeButton("No",null).show();
+
+
+
+                return true;
+
+
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        onSaveButtonClicked();
+        Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
+        super.onBackPressed();
+    }
+
+
 }
