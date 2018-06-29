@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package alc.demorgan.jounal;
+package alc.demorgan.jounal.NoteActivity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
+import alc.demorgan.jounal.R;
 import alc.demorgan.jounal.database.AppDatabase;
 import alc.demorgan.jounal.database.JournalEntry;
 

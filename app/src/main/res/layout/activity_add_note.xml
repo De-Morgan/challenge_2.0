@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:maxLength="75"
+        android:maxLength="60"
         android:maxLines="2"
         android:textColor="@color/white"
         android:hint="@string/edit_note_description"
@@ -27,7 +27,7 @@
 
         android:textColorHint="@color/white"
         android:padding="@dimen/text_side_margin"
-        android:background="@color/colorAccent"
+        android:background="@color/colorPrimaryLight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

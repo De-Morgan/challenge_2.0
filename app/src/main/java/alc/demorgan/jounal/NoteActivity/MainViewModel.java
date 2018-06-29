@@ -1,4 +1,4 @@
-package alc.demorgan.jounal;
+package alc.demorgan.jounal.NoteActivity;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

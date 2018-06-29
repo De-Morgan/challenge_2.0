@@ -1,4 +1,4 @@
-package alc.demorgan.jounal;
+package alc.demorgan.jounal.NoteActivity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,12 +13,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
+import alc.demorgan.jounal.LoginAcitivies.LoginActivity;
+import alc.demorgan.jounal.MainActivity;
+import alc.demorgan.jounal.R;
 import alc.demorgan.jounal.database.AppDatabase;
 import alc.demorgan.jounal.database.JournalEntry;
 
@@ -26,6 +34,8 @@ import static android.support.v7.widget.DividerItemDecoration.VERTICAL;
 
 
 public class NotepadActivity extends AppCompatActivity implements NoteAdapter.ItemClickListener {
+
+    FirebaseUser user;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
@@ -40,6 +50,14 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        assert user != null;
+        String title = user.getDisplayName() + "'s" + " Journal";
+        if (user.getDisplayName() != null) {
+            this.setTitle(title);
+        }else {
+            this.setTitle(getString(R.string.app_name));
+        }
 
         mRecyclerView = findViewById(R.id.recyclerViewJournals);
 
@@ -123,4 +141,25 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+            if(item.getItemId() == R.id.sign_out){
+
+                FirebaseAuth.getInstance().signOut();
+
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                return true;
+            }
+
+
+            return false;
+    }
 }

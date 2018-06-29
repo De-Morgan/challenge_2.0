@@ -1,4 +1,4 @@
-package alc.demorgan.jounal;
+package alc.demorgan.jounal.NoteActivity;
 
 /*
  * Copyright (C) 2017 The Android Open Source Project
