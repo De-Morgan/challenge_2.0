@@ -23,7 +23,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            card_view:cardCornerRadius="@dimen/card_album_radius">
+            card_view:cardCornerRadius="@dimen/card_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -64,7 +64,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/songs_count_padding_bottom"
+            android:paddingBottom="5dp"
             android:paddingLeft="@dimen/text_side_margin"
             android:paddingRight="@dimen/text_side_margin"
             android:textSize="14sp"

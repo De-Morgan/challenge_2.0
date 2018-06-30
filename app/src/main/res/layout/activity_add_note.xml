@@ -27,7 +27,7 @@
 
         android:textColorHint="@color/white"
         android:padding="@dimen/text_side_margin"
-        android:background="@color/colorPrimaryLight"
+        android:background="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         />

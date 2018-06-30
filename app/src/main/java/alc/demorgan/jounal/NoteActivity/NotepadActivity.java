@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
-import alc.demorgan.jounal.LoginAcitivies.LoginActivity;
 import alc.demorgan.jounal.MainActivity;
 import alc.demorgan.jounal.R;
 import alc.demorgan.jounal.database.AppDatabase;
@@ -52,12 +51,13 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
         setContentView(R.layout.activity_notepad);
         user = FirebaseAuth.getInstance().getCurrentUser();
         assert user != null;
-        String title = user.getDisplayName() + "'s" + " Journal";
+        String title = user.getDisplayName().split(" ")[0] + "'s" + " Journal";
         if (user.getDisplayName() != null) {
             this.setTitle(title);
         }else {
             this.setTitle(getString(R.string.app_name));
         }
+
 
         mRecyclerView = findViewById(R.id.recyclerViewJournals);
 
