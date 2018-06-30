@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "243845084259",
+    "firebase_url": "https://jounal-f1b57.firebaseio.com",
+    "project_id": "jounal-f1b57",
+    "storage_bucket": "jounal-f1b57.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243845084259:android:0fafaa0de6eb2c15",
+        "android_client_info": {
+          "package_name": "alc.demorgan.jounal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "243845084259-hjjtt8943h3do4776r7id55gl3nnj1rd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alc.demorgan.jounal",
+            "certificate_hash": "3231aafe4f94597a2f4ca601257297a5a4e21e1b"
+          }
+        },
+        {
+          "client_id": "243845084259-ht36t0lufaaaebljvtja9qvl871huggg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcb4AlnWr5JPSQ7Gzy4HV-G6y-8I0JZ_M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "243845084259-ht36t0lufaaaebljvtja9qvl871huggg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
