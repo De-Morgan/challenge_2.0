@@ -54,7 +54,8 @@
                 android:inputType="textPassword"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/colorPrimary"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
