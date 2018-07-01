@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -39,7 +40,7 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
     private static final String TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private NoteAdapter mAdapter;
-
+    private  TextView welcome;
     private AppDatabase mDb;
 
 
@@ -50,13 +51,6 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notepad);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        assert user != null;
-        String title = user.getDisplayName().split(" ")[0] + "'s" + " Journal";
-        if (user.getDisplayName() != null) {
-            this.setTitle(title);
-        }else {
-            this.setTitle(getString(R.string.app_name));
-        }
 
 
         mRecyclerView = findViewById(R.id.recyclerViewJournals);
@@ -119,6 +113,11 @@ public class NotepadActivity extends AppCompatActivity implements NoteAdapter.It
 
         mDb = AppDatabase.getInstance(getApplicationContext());
         setupViewModel();
+
+
+
+
+
     }
 
     private void setupViewModel() {

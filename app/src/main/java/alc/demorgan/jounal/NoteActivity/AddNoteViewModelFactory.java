@@ -2,6 +2,7 @@ package alc.demorgan.jounal.NoteActivity;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
+import android.support.annotation.NonNull;
 
 
 import alc.demorgan.jounal.database.AppDatabase;
@@ -16,8 +17,9 @@ public class AddNoteViewModelFactory extends ViewModelProvider.NewInstanceFactor
         mJournalId = journalId;
     }
 
+    @NonNull
     @Override
-    public <T extends ViewModel> T create(Class<T>  modelClass) {
+    public <T extends ViewModel> T create(@NonNull Class<T>  modelClass) {
         return (T) new AddNoteViewModel(mDb, mJournalId);
     }
 }

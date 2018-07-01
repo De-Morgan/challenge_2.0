@@ -24,6 +24,10 @@
             android:clipToPadding="false"
             android:paddingBottom="80dp" />
 
+
+
+
+
         <!-- Floating action button that launches AddNoteActivity when clicked -->
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

@@ -23,14 +23,13 @@
         android:background="@drawable/image"
         android:padding="@dimen/activity_horizontal_margin">
 
-
         <ImageView
             android:layout_width="@dimen/logo_w_h"
             android:layout_height="@dimen/logo_w_h"
             android:layout_gravity="center_horizontal|top"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:contentDescription="@string/journal_description"
             android:src="@drawable/journal" />
+
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
